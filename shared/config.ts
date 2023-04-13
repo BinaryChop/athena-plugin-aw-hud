@@ -4,3 +4,7 @@ export const INDEX_CONFIG = {
     ATHENA_VERSION: '5.0.0',
     AUTHORS: ['Styuk', 'BinaryChop'],
 };
+
+export const HUD_CONFIG = {
+    HUD_SWITCH: 133,
+};
