@@ -1,13 +1,15 @@
 import * as alt from 'alt-client';
 import * as native from 'natives';
 import * as AthenaClient from '@AthenaClient/api';
+
+import ViewModel from '@AthenaClient/models/viewModel';
 import { HUD_COMPONENT } from '@AthenaShared/enums/hudComponents';
 import { SYSTEM_EVENTS } from '@AthenaShared/enums/system';
 import { PLAYER_SYNCED_META } from '@AthenaShared/enums/playerSynced';
-import ViewModel from '@AthenaClient/models/viewModel';
 import { VehicleData } from '@AthenaShared/information/vehicles';
 import { isVehicleType, VEHICLE_TYPE } from '@AthenaShared/enums/vehicleTypeFlags';
 import { SHARED_CONFIG } from '@AthenaShared/configurations/shared';
+
 import IHudComponent from '../interfaces/iHudComponent';
 import IClientInteraction from '../interfaces/iClientInteraction';
 import { HUD_CONFIG } from '../shared/config';
