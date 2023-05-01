@@ -13,7 +13,7 @@ import { SHARED_CONFIG } from '@AthenaShared/configurations/shared';
 import IHudComponent from '../interfaces/iHudComponent';
 import IClientInteraction from '../interfaces/iClientInteraction';
 import { HUD_CONFIG } from '../shared/config';
-// import { GPVoice } from '../../gp-voice/client/src/voice';
+// import { GPVoice } from '../../gp-voice/client/src/voice'; // Phone Plugin - will be added later
 
 const PAGE_NAME = 'Hud';
 const RegisteredComponents: { [key: string]: IHudComponent } = {};
@@ -125,7 +125,9 @@ class InternalFunctions implements ViewModel {
         }
     } */
 
-    static async setVisible(value: boolean) {
+    ///// Disabled by Nick
+
+    /* static async setVisible(value: boolean) {
         isDisabled = !value;
 
         if (!isDisabled) {
@@ -136,7 +138,28 @@ class InternalFunctions implements ViewModel {
         }
 
         native.displayRadar(false);
+    } */
+
+    //// this has been added by Nick
+
+    static async setVisible(value: boolean) {
+        const player = alt.Player.local;           
+        const isInsideVehicle = !(!player.vehicle || !player.vehicle.valid)
+    
+        isDisabled = !value;
+    
+        if (!isDisabled) {
+            native.displayRadar(isInsideVehicle);
+            native.playSoundFrontend(-1, 'HIGHLIGHT_NAV_UP_DOWN', 'HUD_FRONTEND_DEFAULT_SOUNDSET', true);
+            AthenaClient.webview.emit(`${PAGE_NAME}:SwitchHudState`, hudStates[hudStateIndex]);
+            return;
+        }
+    
+        native.displayRadar(false);
     }
+    
+
+
 
     static async ready() {
         if (interval) {
@@ -149,13 +172,13 @@ class InternalFunctions implements ViewModel {
         HudView.registerComponent(HUD_COMPONENT.CASH, InternalFunctions.defaultCashComponent, 1000);
         HudView.registerComponent(HUD_COMPONENT.BANK, InternalFunctions.defaultBankComponent, 1000);
         //TODO: timeComponent
-        // HudView.registerComponent(HUD_COMPONENT.TIME, InternalFunctions.defaultTimeComponent, 5000);
+        // HudView.registerComponent(HUD_COMPONENT.TIME, InternalFunctions.defaultTimeComponent, 5000); // Time Plugin -  Disabled
         HudView.registerComponent(HUD_COMPONENT.WATER, InternalFunctions.defaultWaterComponent, 1000);
         HudView.registerComponent(HUD_COMPONENT.FOOD, InternalFunctions.defaultFoodComponent, 1000);
         HudView.registerComponent(HUD_COMPONENT.INTERACTIONS, InternalFunctions.defaultInteractionsComponent, 500);
         HudView.registerComponent(HUD_COMPONENT.DEAD, InternalFunctions.defaultDeadComponent, 500);
         HudView.registerComponent(HUD_COMPONENT.IDENTIFIER, InternalFunctions.defaultIdentifier, 5000);
-//        HudView.registerComponent(HUD_COMPONENT.MICROPHONE, InternalFunctions.defaultMicrophoneComponent, 100);
+//        HudView.registerComponent(HUD_COMPONENT.MICROPHONE, InternalFunctions.defaultMicrophoneComponent, 100); // VOICE Plugin
 
         // Vehicle Components
         HudView.registerComponent(HUD_COMPONENT.IS_IN_VEHICLE, InternalFunctions.defaultIsInVehicleComponent, 1000);
@@ -164,8 +187,8 @@ class InternalFunctions implements ViewModel {
         HudView.registerComponent(HUD_COMPONENT.SPEED_UNIT, InternalFunctions.defaultSpeedUnitComponente);
 
         // TODO - Tacho erweiterung
-        // HudView.registerComponent(HUD_COMPONENT.RPM, InternalFunctions.defaultRPMComponent, 100);
-        // HudView.registerComponent(HUD_COMPONENT.Type, InternalFunctions.defaultSpeedoComponent, 100);
+        // HudView.registerComponent(HUD_COMPONENT.RPM, InternalFunctions.defaultRPMComponent, 100); // Custom Tacho
+        // HudView.registerComponent(HUD_COMPONENT.Type, InternalFunctions.defaultSpeedoComponent, 100); // Custom Tacho
         HudView.registerComponent(HUD_COMPONENT.GEAR, InternalFunctions.defaultGearComponent, 100);
         HudView.registerComponent(HUD_COMPONENT.ENGINE, InternalFunctions.defaultEngineComponent, 100);
         HudView.registerComponent(HUD_COMPONENT.LOCK, InternalFunctions.defaultLockComponent, 100);
